@@ -24,10 +24,10 @@ else
 fi
 
 root=$(pwd)
-tempdir=NadekoInstall_Temp
+tempdir="$root/NadekoInstall_Temp"
 
-rm -r "$tempdir" 1>/dev/null 2>&1
-mkdir "$tempdir"
+rm -rf "$tempdir" 1>/dev/null 2>&1
+mkdir "$tempdir" -p
 cd "$tempdir"
 
 echo ""
