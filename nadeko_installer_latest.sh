@@ -24,11 +24,11 @@ else
 fi
 
 root=$(pwd)
-tempdir="$root/NadekoInstall_Temp"
+builddir="${root}NadekoInstall_Temp"
 
-rm -rf "$tempdir" 1>/dev/null 2>&1
-mkdir "$tempdir" -p
-cd "$tempdir"
+rm -rf "$builddir" 1>/dev/null 2>&1
+mkdir -p "$builddir"
+cd "$builddir"
 
 echo ""
 echo "Downloading NadekoBot, please wait."
@@ -38,22 +38,22 @@ echo "NadekoBot downloaded."
 
 echo ""
 echo "Downloading Nadeko dependencies"
-cd $root/$tempdir/NadekoBot/Discord.Net/src/Discord.Net.Core/
+cd $builddir/NadekoBot/Discord.Net/src/Discord.Net.Core/
 dotnet restore 1>/dev/null 2>&1
-cd $root/$tempdir/NadekoBot/Discord.Net/src/Discord.Net.Rest/
+cd $builddir/NadekoBot/Discord.Net/src/Discord.Net.Rest/
 dotnet restore 1>/dev/null 2>&1
-cd $root/$tempdir/NadekoBot/Discord.Net/src/Discord.Net.WebSocket/
+cd $builddir/NadekoBot/Discord.Net/src/Discord.Net.WebSocket/
 dotnet restore 1>/dev/null 2>&1
-cd $root/$tempdir/NadekoBot/Discord.Net/src/Discord.Net.Commands/
+cd $builddir/NadekoBot/Discord.Net/src/Discord.Net.Commands/
 dotnet restore 1>/dev/null 2>&1
-cd $root/$tempdir/NadekoBot/src/NadekoBot/
+cd $builddir/NadekoBot/src/NadekoBot/
 dotnet restore 1>/dev/null 2>&1
 echo ""
 echo "Download done"
 
 echo ""
 echo "Building NadekoBot"
-cd $root/$tempdir/NadekoBot/src/NadekoBot/
+cd $builddir/NadekoBot/src/NadekoBot/
 dotnet build --configuration Release 1>/dev/null 2>&1
 echo ""
 echo "Building done. Moving Nadeko"
@@ -62,11 +62,11 @@ cd "$root"
 
 if [ ! -d NadekoBot ]
 then
-    mv "$tempdir"/NadekoBot NadekoBot
+    mv "$builddir"/NadekoBot NadekoBot
 else
     rm -rf NadekoBot_old 1>/dev/null 2>&1
     mv -fT NadekoBot NadekoBot_old 1>/dev/null 2>&1
-    mv $tempdir/NadekoBot NadekoBot
+    mv $builddir/NadekoBot NadekoBot
     cp -f $root/NadekoBot_old/src/NadekoBot/credentials.json $root/NadekoBot/src/NadekoBot/credentials.json 1>/dev/null 2>&1
     echo ""
     echo "credentials.json copied to the new version"
@@ -78,7 +78,7 @@ else
     echo "Other data copied to the new version"
 fi
 
-rm -r "$tempdir"
+rm -r "$builddir"
 echo ""
 echo "Installation Complete."
 exit 0
